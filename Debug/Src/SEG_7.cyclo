@@ -1,0 +1,14 @@
+../Src/SEG_7.c:36:6:Seg_7_Conf	1
+../Src/SEG_7.c:74:6:Seg_ON	9
+../Src/SEG_7.c:91:6:Seg_On_place	5
+../Src/SEG_7.c:102:6:Seg_OFF_place	5
+../Src/SEG_7.c:113:6:Seg_OFF	9
+../Src/SEG_7.c:129:6:Seg_number_On	11
+../Src/SEG_7.c:157:6:Seg_number_OFF	11
+../Src/SEG_7.c:177:6:Seg_4numbers_On	6
+../Src/SEG_7.c:201:6:Seg_RefreshStep	3
+../Src/SEG_7.c:230:6:stoperStart	1
+../Src/SEG_7.c:236:6:stoperStop	1
+../Src/SEG_7.c:241:6:stoperReset	1
+../Src/SEG_7.c:253:6:stoperUpdate	4
+../Src/SEG_7.c:281:9:IsNumber	6
