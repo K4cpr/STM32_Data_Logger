@@ -9,13 +9,14 @@
 #include "lpuart.h"
 #include "led.h"
 #include <string.h>
-
+#include "adc.h"
 
 LedPanel panelLED2;
+volatile uint32_t BuffTx[128];
+volatile int tx_busy;
+volatile uint32_t tx_index = 0;
 
-volatile uint8_t BuffTX[128];
-volatile int tx_index;
-volatile uint32_t tx_busy = 0;
+
 
 void LPUART1_config(void)
 {
@@ -44,66 +45,98 @@ void LPUART1_config(void)
 
 	NVIC_SetPriority(LPUART1_IRQn, 1);
 	NVIC_EnableIRQ(LPUART1_IRQn);
-
-}
-
-void GetStringLPUART1(char c[], uint32_t *char_ready)
-{
-	static int i;
-
-		if(LPUART1->ISR & USART_ISR_RXNE)
-			{
-				char znak = LPUART1->RDR;
-				if(znak == '\n')
-					{
-						 c[i] = '\0';
-						 i = 0;
-						 *char_ready = 1;
-					}
-				else
-					{
-						c[i++] = znak;
-					}
-			}
 }
 
 void LPUART1_IRQHandler(void)
 {
 	if(LPUART1->ISR & USART_ISR_TXE)
+	{
+		if(tx_busy == 1)
 		{
-			if(tx_busy == 1)
+				LPUART1->TDR = BuffTx[tx_index];
+				tx_index ++;
+				if(BuffTx[tx_index] == '\0')
 				{
-					LPUART1->TDR = BuffTX[tx_index];
-					tx_index ++;
-					if(BuffTX[tx_index] == '\0')
-						{
-							LPUART1->CR1 &= ~(USART_CR1_TXEIE);
-							tx_busy = 0;
-							tx_index = 0;
-						}
+					LPUART1->CR1 &= ~(USART_CR1_TXEIE);
+					tx_busy = 0;
+					tx_index = 0;
 				}
+
 		}
+	}
 }
 
 void SendString(char z[])
 {
-	int i = 0;
-	for(int i = 0; i<127; i++)
-		{
-			BuffTX[i] = 0;
-		}
+	while(tx_busy == 1)
+	{
+	}
+	int copy_index = 0;
 
-	while(z[i] != '\0')
-		{
-			BuffTX[i] = z[i];
-			i++;
-		}
-
-	BuffTX[i] = '\0';
+	while(z[copy_index] != '\0')
+	{
+		BuffTx[copy_index] = z[copy_index];
+		copy_index ++;
+	}
+	BuffTx[copy_index] = '\0';
 	tx_busy = 1;
 	tx_index = 0;
 
 	LPUART1->CR1 |= USART_CR1_TXEIE;
+
 }
+
+
+void SendNumber(uint16_t num)
+{
+	char BuffNumber[5];
+
+	uint16_t wynik1 = num % 10;
+	uint16_t wynik2 = (num / 10) % 10;
+	uint16_t wynik3 = (num / 100) % 10;
+	uint16_t wynik4 = num / 1000;
+
+	char text1 = wynik4 + '0';
+	char text2 = wynik3 + '0';
+	char text3 = wynik2 + '0';
+	char text4 = wynik1 + '0';
+	char text5 = '\0';
+
+	BuffNumber[0] = text1;
+	BuffNumber[1] = text2;
+	BuffNumber[2] = text3;
+	BuffNumber[3] = text4;
+	BuffNumber[4] = text5;
+
+	uint8_t start = 0;
+	while((BuffNumber[start] == '0') && start < 3)
+	{
+		start++;
+
+	}
+
+
+	if(num > 9999)
+		{
+			SendString("OVF");
+		}
+	else
+		{
+			SendString(start + BuffNumber);
+		}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 

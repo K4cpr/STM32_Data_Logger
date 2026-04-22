@@ -9,12 +9,9 @@
 #define LPUART_H_
 
 void LPUART1_config(void);
-//void LPUART1_Receiv_Led(void);
-void GetStringLPUART1(char c[], uint32_t *char_ready);
-
 void SendString(char z[]);
 void LPUART1_IRQHandler(void);
 
-
+void SendNumber(uint16_t num);
 
 #endif /* LPUART_H_ */

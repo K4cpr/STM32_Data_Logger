@@ -1,5 +1,4 @@
-"./Src/SEG_7.o"
-"./Src/button.o"
+"./Src/adc.o"
 "./Src/led.o"
 "./Src/lpuart.o"
 "./Src/main.o"

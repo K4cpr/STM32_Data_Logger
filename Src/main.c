@@ -19,24 +19,38 @@
 #include "main.h"
 #include "sys_clocks.h"
 #include "led.h"
-#include "SEG_7.h"
-#include "button.h"
 #include "lpuart.h"
+#include "adc.h"
 
-
+uint32_t Value_adc;
+uint32_t Volt_adc;
 LedPanel panelLED;
 
 int main(void)
 {
+
 	SystemClockSetup();
 	LedConf();
-	Seg_7_Conf();
-	button_init();
 	LPUART1_config();
-	SendString("\r\n\r\n\r\n\r\n\r\n===== MENU =====\r\nCommands:\r\nLedControl\r\n7SegControl\r\nJoyControl\r\n\r\n\r\n\r\n\r\n");
+	//SendString("Hello\r\n");
+	Adc_Init();
+	//Value_adc = Adc_Read();
+
+
     while(1)
     {
-    	LPUART1_Menu();
+    	Value_adc = Adc_Read();
+    	Volt_adc = Adc_Volt_Read();
+
+    	SendNumber(Value_adc);
+
+    	SendString("\r\n mV:\r\n");
+
+       	SendNumber(Volt_adc);
+
+       	SendString("\r\n mV:\r\n");
+    	Delay(1500);
+
     }
 }
 

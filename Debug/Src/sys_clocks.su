@@ -4,6 +4,6 @@
 ../Src/sys_clocks.c:34:6:SystemClockPLL48	4	static
 ../Src/sys_clocks.c:89:6:SystemClockPLL80	4	static
 ../Src/sys_clocks.c:144:6:SystemClockSetup	8	static
-../Src/sys_clocks.c:152:6:SysTick_Handler	8	static
+../Src/sys_clocks.c:152:6:SysTick_Handler	4	static
 ../Src/sys_clocks.c:159:10:GetSystemTick	4	static
 ../Src/sys_clocks.c:166:6:Delay	24	static

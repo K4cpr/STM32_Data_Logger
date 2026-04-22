@@ -7,7 +7,7 @@
 
 #include "main.h"
 #include "sys_clocks.h"
-#include "SEG_7.h"
+
 volatile uint32_t Tick;
 
 void SystemClockHSI16(void)
@@ -82,7 +82,7 @@ void SystemClockPLL48(void)
 	// WAIT FOR SWITCH
 	 while (!((RCC->CFGR & RCC_CFGR_SWS_1) && (RCC->CFGR & RCC_CFGR_SWS_0))) { }
 
-
+	 RCC->CCIPR |= RCC_CCIPR_ADCSEL;
 
 }
 
@@ -152,7 +152,7 @@ void SystemClockSetup(void)
 void SysTick_Handler(void)
 {
 	Tick++;
-	Seg_RefreshStep();
+
 }
 
 

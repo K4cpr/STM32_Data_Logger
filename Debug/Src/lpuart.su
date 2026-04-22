@@ -1,6 +1,6 @@
 ../Drivers/CMSIS/Include/core_cm4.h:1679:22:__NVIC_EnableIRQ	16	static,ignoring_inline_asm
 ../Drivers/CMSIS/Include/core_cm4.h:1809:22:__NVIC_SetPriority	16	static
-../Src/lpuart.c:20:6:LPUART1_config	16	static
-../Src/lpuart.c:50:6:GetStringLPUART1	24	static
-../Src/lpuart.c:70:6:LPUART1_IRQHandler	4	static
-../Src/lpuart.c:88:6:SendString	24	static
+../Src/lpuart.c:21:6:LPUART1_config	16	static
+../Src/lpuart.c:50:6:LPUART1_IRQHandler	4	static
+../Src/lpuart.c:69:6:SendString	24	static
+../Src/lpuart.c:90:6:SendNumber	40	static

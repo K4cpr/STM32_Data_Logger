@@ -1,4 +1,4 @@
-Src/button.o: ../Src/button.c ../Inc/main.h \
+Src/adc.o: ../Src/adc.c ../Inc/main.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/STM32L496xx.h \
  ../Drivers/CMSIS/Include/core_cm4.h \
  ../Drivers/CMSIS/Include/cmsis_version.h \
@@ -6,7 +6,7 @@ Src/button.o: ../Src/button.c ../Inc/main.h \
  ../Drivers/CMSIS/Include/cmsis_gcc.h \
  ../Drivers/CMSIS/Include/mpu_armv7.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h \
- ../Inc/sys_clocks.h ../Inc/button.h ../Inc/led.h ../Inc/SEG_7.h
+ ../Inc/sys_clocks.h ../Inc/sys_clocks.h
 ../Inc/main.h:
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/STM32L496xx.h:
 ../Drivers/CMSIS/Include/core_cm4.h:
@@ -16,6 +16,4 @@ Src/button.o: ../Src/button.c ../Inc/main.h \
 ../Drivers/CMSIS/Include/mpu_armv7.h:
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h:
 ../Inc/sys_clocks.h:
-../Inc/button.h:
-../Inc/led.h:
-../Inc/SEG_7.h:
+../Inc/sys_clocks.h:

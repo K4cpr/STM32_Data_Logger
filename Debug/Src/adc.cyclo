@@ -1,0 +1,5 @@
+../Src/adc.c:14:6:Adc_Gpio_Init	1
+../Src/adc.c:27:6:Adc_Config	3
+../Src/adc.c:50:6:Adc_Init	2
+../Src/adc.c:66:10:Adc_Read	2
+../Src/adc.c:79:10:Adc_Volt_Read	1
