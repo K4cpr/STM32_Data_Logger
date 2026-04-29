@@ -21,10 +21,13 @@
 #include "led.h"
 #include "lpuart.h"
 #include "adc.h"
+#include "tim.h"
 
 uint32_t Value_adc;
 uint32_t Volt_adc;
 LedPanel panelLED;
+
+
 
 int main(void)
 {
@@ -35,6 +38,8 @@ int main(void)
 	//SendString("Hello\r\n");
 	Adc_Init();
 	//Value_adc = Adc_Read();
+	Tim6Init();
+	Tim6Start();
 
 
     while(1)
@@ -42,14 +47,16 @@ int main(void)
     	Value_adc = Adc_Read();
     	Volt_adc = Adc_Volt_Read();
 
-    	SendNumber(Value_adc);
 
-    	SendString("\r\n mV:\r\n");
+    	if(minute == 1)
+    	{
+    		minute = 0;
+    		SendString("\r\n adc Value:\r\n");
+          	SendNumber(Value_adc);
+          	SendString("\r\n mV:\r\n");
+            SendNumber(Volt_adc);
+    	}
 
-       	SendNumber(Volt_adc);
-
-       	SendString("\r\n mV:\r\n");
-    	Delay(1500);
 
     }
 }

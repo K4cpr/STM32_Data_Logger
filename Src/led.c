@@ -12,9 +12,6 @@
 #include "sys_clocks.h"
 
 
-LedPanel panelLED3;
-
-
 
 void LedConf(void)
 {

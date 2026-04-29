@@ -5,4 +5,5 @@
 "./Src/sys_clocks.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
+"./Src/tim.o"
 "./Startup/startup_stm32l496zgtx.o"

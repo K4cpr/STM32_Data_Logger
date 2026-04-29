@@ -43,7 +43,7 @@ void LPUART1_config(void)
 			while(1){};
 		}
 
-	NVIC_SetPriority(LPUART1_IRQn, 1);
+	NVIC_SetPriority(LPUART1_IRQn, 0);
 	NVIC_EnableIRQ(LPUART1_IRQn);
 }
 
