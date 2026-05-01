@@ -1,7 +1,0 @@
-../Src/led.c:16:6:LedConf	4	static
-../Src/led.c:49:6:Led_ON	16	static
-../Src/led.c:69:6:Led_OFF	16	static
-../Src/led.c:90:6:Led_TOGGLE	16	static
-../Src/led.c:112:6:LedN_ON	16	static
-../Src/led.c:128:6:LedN_OFF	16	static
-../Src/led.c:144:6:LedN_TOGGLE	16	static

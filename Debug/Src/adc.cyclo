@@ -1,5 +1,8 @@
-../Src/adc.c:14:6:Adc_Gpio_Init	1
-../Src/adc.c:27:6:Adc_Config	3
-../Src/adc.c:50:6:Adc_Init	2
-../Src/adc.c:66:10:Adc_Read	2
-../Src/adc.c:79:10:Adc_Volt_Read	1
+../Src/adc.c:15:6:Adc_Gpio_Init	1
+../Src/adc.c:28:6:Adc_Config	3
+../Src/adc.c:54:6:Adc_Init	2
+../Src/adc.c:70:10:Adc_ReadTest	2
+../Src/adc.c:83:10:Adc_Volt_Read	1
+../Src/adc.c:92:6:AdcDmaStart	1
+../Src/adc.c:98:9:AdcResult	2
+../Src/adc.c:118:10:AdcResultAvg	3

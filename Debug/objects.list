@@ -1,5 +1,5 @@
 "./Src/adc.o"
-"./Src/led.o"
+"./Src/dma.o"
 "./Src/lpuart.o"
 "./Src/main.o"
 "./Src/sys_clocks.o"

@@ -28,7 +28,7 @@ void Tim6Start(void)
 	TIM6->ARR = 9999;
 	TIM6->DIER |= TIM_DIER_UIE;
 
-	NVIC_SetPriority(TIM6_DAC_IRQn, 1);
+	NVIC_SetPriority(TIM6_DAC_IRQn, 2);
 	NVIC_EnableIRQ(TIM6_DAC_IRQn);
 
 	TIM6->CR1 |= TIM_CR1_CEN;

@@ -8,13 +8,14 @@
 
 #include "main.h"
 #include "sys_clocks.h"
-
+#include "adc.h"
+#include "dma.h"
 
 
 void Adc_Gpio_Init(void)
 {
-	//PA0 ADC 12 IN5
-	//edit PC2 ADC123_INP3
+
+
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN;
 
 	GPIOC->MODER &= ~(GPIO_MODER_MODE2);
@@ -45,6 +46,9 @@ void Adc_Config(void)
 	ADC1->CR &= ~(ADC_CR_ADCAL);
 	ADC1->CR |= ADC_CR_ADCAL;
 	while(ADC1->CR & ADC_CR_ADCAL){}
+
+	ADC1->CFGR |= ADC_CFGR_DMAEN;
+	ADC1->CFGR |= ADC_CFGR_DMACFG;
 }
 
 void Adc_Init(void)
@@ -63,9 +67,9 @@ void Adc_Init(void)
 
 }
 
-uint32_t Adc_Read(void)
+uint16_t Adc_ReadTest(void)
 {
-	uint32_t Value;
+	volatile uint16_t Value;
 	ADC1->CR |= ADC_CR_ADSTART;
 	while(!(ADC1->ISR & ADC_ISR_EOC))
 	{
@@ -79,17 +83,54 @@ uint32_t Adc_Read(void)
 uint32_t Adc_Volt_Read(void)
 {
 	uint32_t VoltAdc;
-	VoltAdc = Adc_Read();
+	VoltAdc = AdcResultAvg();
 	uint32_t VoltResult = (VoltAdc * 3300)/4095;
 	return VoltResult;
 }
 
 
+void AdcDmaStart(void)
+{
+	ADC1->CFGR |= ADC_CFGR_CONT;
+	ADC1->CR |= ADC_CR_ADSTART;
+}
+
+uint8_t AdcResult(void)
+{
+
+	volatile uint8_t dma_ready = 0;
+
+	if(DMA2->ISR & DMA_ISR_TCIF3)
+	{
+		dma_ready = 1;
+		DMA2->IFCR |= DMA_IFCR_CTCIF3;
+
+	}
+	else
+	{
+		dma_ready = 0;
+	}
 
 
+	return dma_ready;
+}
 
+uint16_t AdcResultAvg(void)
+{
+	uint8_t i;
+	uint32_t suma = 0;
+	uint16_t Avg = 0;
+	if(AdcResult())
+	{
+		for(i = 0; i<100; i++)
+		{
+			suma += BuffAdc[i];
+		}
+		Avg = suma/100;
+	}
 
-
+	return Avg;
+}
 
 
 

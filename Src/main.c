@@ -18,46 +18,40 @@
 
 #include "main.h"
 #include "sys_clocks.h"
-#include "led.h"
 #include "lpuart.h"
 #include "adc.h"
 #include "tim.h"
-
-uint32_t Value_adc;
-uint32_t Volt_adc;
-LedPanel panelLED;
+#include "dma.h"
 
 
+volatile uint16_t AdcAvg;
+volatile uint16_t Volt_adc;
 
 int main(void)
 {
-
 	SystemClockSetup();
-	LedConf();
 	LPUART1_config();
-	//SendString("Hello\r\n");
 	Adc_Init();
-	//Value_adc = Adc_Read();
+	Dma2AdcInit();
+	Dma2AdcStart();
+	AdcDmaStart();
 	Tim6Init();
 	Tim6Start();
-
-
+	AdcResult();
+	Dma2UartInit();
     while(1)
     {
-    	Value_adc = Adc_Read();
-    	Volt_adc = Adc_Volt_Read();
-
-
     	if(minute == 1)
     	{
+        	AdcAvg = AdcResultAvg();
+        	Volt_adc = Adc_Volt_Read();
     		minute = 0;
-    		SendString("\r\n adc Value:\r\n");
-          	SendNumber(Value_adc);
-          	SendString("\r\n mV:\r\n");
-            SendNumber(Volt_adc);
+        	SendStringDma("AVG: ");
+        	SendNumberDma(AdcAvg);
+        	SendStringDma("\r\n mV: ");
+        	SendNumberDma(Volt_adc);
+        	SendStringDma("\r\n");
     	}
-
-
     }
 }
 

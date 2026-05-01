@@ -7,12 +7,11 @@
 
 #include "main.h"
 #include "lpuart.h"
-#include "led.h"
 #include <string.h>
 #include "adc.h"
 
-LedPanel panelLED2;
-volatile uint32_t BuffTx[128];
+
+volatile uint8_t BuffTx[100];
 volatile int tx_busy;
 volatile uint32_t tx_index = 0;
 
@@ -43,8 +42,10 @@ void LPUART1_config(void)
 			while(1){};
 		}
 
-	NVIC_SetPriority(LPUART1_IRQn, 0);
-	NVIC_EnableIRQ(LPUART1_IRQn);
+//	NVIC_SetPriority(LPUART1_IRQn, 0);
+//	NVIC_EnableIRQ(LPUART1_IRQn);
+
+	LPUART1->CR3 |= USART_CR3_DMAT;
 }
 
 void LPUART1_IRQHandler(void)
@@ -68,9 +69,8 @@ void LPUART1_IRQHandler(void)
 
 void SendString(char z[])
 {
-	while(tx_busy == 1)
-	{
-	}
+	while(tx_busy == 1);
+
 	int copy_index = 0;
 
 	while(z[copy_index] != '\0')
@@ -127,12 +127,80 @@ void SendNumber(uint16_t num)
 
 }
 
+void SendStringDma(char z[])
+{
+	while(tx_busy == 1);
+
+	int copy_index = 0;
+
+	while(z[copy_index] != '\0')
+	{
+		BuffTx[copy_index] = z[copy_index];
+		copy_index ++;
+	}
+	BuffTx[copy_index] = '\0';
+
+	DMA2_Channel6->CCR &= ~(DMA_CCR_EN);
+	DMA2_Channel6->CPAR = (uint32_t)&LPUART1->TDR;
+	DMA2_Channel6->CMAR = (uint32_t)&BuffTx[0];
+
+	DMA2_Channel6->CNDTR = copy_index;
+	tx_busy = 1;
+	DMA2_Channel6->CCR |= DMA_CCR_EN;
+
+}
 
 
+void DMA2_CH6_IRQHandler(void)
+{
+	if(DMA2->ISR & DMA_ISR_TCIF6)
+		{
+			DMA2->IFCR |= DMA_IFCR_CTCIF6;
+			tx_busy = 0;
+
+		}
+}
 
 
+void SendNumberDma(uint16_t num)
+{
+	char BuffNumber[5];
+
+	uint16_t wynik1 = num % 10;
+	uint16_t wynik2 = (num / 10) % 10;
+	uint16_t wynik3 = (num / 100) % 10;
+	uint16_t wynik4 = num / 1000;
+
+	char text1 = wynik4 + '0';
+	char text2 = wynik3 + '0';
+	char text3 = wynik2 + '0';
+	char text4 = wynik1 + '0';
+	char text5 = '\0';
+
+	BuffNumber[0] = text1;
+	BuffNumber[1] = text2;
+	BuffNumber[2] = text3;
+	BuffNumber[3] = text4;
+	BuffNumber[4] = text5;
+
+	uint8_t start = 0;
+	while((BuffNumber[start] == '0') && start < 3)
+	{
+		start++;
+
+	}
 
 
+	if(num > 9999)
+		{
+			SendStringDma("OVF");
+		}
+	else
+		{
+			SendStringDma(start + BuffNumber);
+		}
+
+}
 
 
 
